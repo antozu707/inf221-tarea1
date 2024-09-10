@@ -3,6 +3,11 @@
 #include <algorithm>
 #include <iostream>
 #include <ctime>
+#include "bubble-sort.cpp"
+#include "merge-sort.cpp"
+#include "quick-sort.cpp"
+#include "sort-function.cpp"
+
 
 using namespace std;
 
