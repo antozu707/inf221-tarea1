@@ -56,6 +56,7 @@ void mergeSort(vector<int>& vec, int left, int right) {
 }
 
 // TEST
+/*
 int main() {
     vector<int> vec = {12, 11, 13, 5, 6, 7};
     int n = vec.size();
@@ -65,4 +66,4 @@ int main() {
     for (auto i: vec)
         cout << i << " ";
     return 0;
-}
+}*/

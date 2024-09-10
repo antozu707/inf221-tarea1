@@ -29,6 +29,7 @@ void quickSort(vector<int> &vec, int low, int high) {
 }
 
 // TEST
+/*
 int main() {
     vector<int> vec = {10, 7, 8, 9, 1, 5};
     int n = vec.size();
@@ -39,4 +40,4 @@ int main() {
         cout << i << " ";
     }
     return 0;
-}
+}*/

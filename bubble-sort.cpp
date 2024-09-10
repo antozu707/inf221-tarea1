@@ -14,10 +14,11 @@ void bubbleSort(vector<int>& v) {
 
 
 // TEST
+/*
 int main() {
     vector<int> v = {5, 1, 4, 2, 8};
     bubbleSort(v);
     for (auto i : v)
         cout << i << " ";
     return 0;
-}
+}*/
