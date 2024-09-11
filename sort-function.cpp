@@ -1,3 +1,4 @@
+// Código proporcionado por la documentación de C++
 #include <vector>
 #include <algorithm>
 #include <iostream>

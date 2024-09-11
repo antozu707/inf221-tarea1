@@ -1,282 +1,117 @@
-#include <bits/stdc++.h>
-using namespace std;
-typedef long long lld;
- 
-/* Strassen1's Algorithm for matrix multiplication
-Complexity: O(n^2.808) */
- 
-inline lld** MatrixMultiply(lld** a, lld** b, int n,
-                                    int l, int m)
-{
-    lld** c = new lld*[n];
-    for (int i = 0; i < n; i++)
-        c[i] = new lld[m];
- 
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            c[i][j] = 0;
-            for (int k = 0; k < l; k++) {
-                c[i][j] += a[i][k] * b[k][j];
-            }
-        }
-    }
-    return c;
-}
- 
-inline lld** Strassen1(lld** a, lld** b, int n,
-                                int l, int m)
-{
-    if (n == 1 || l == 1 || m == 1)
-        return MatrixMultiply(a, b, n, l, m);
- 
-    lld** c = new lld*[n];
-    for (int i = 0; i < n; i++)
-        c[i] = new lld[m];
- 
-    int adjN = (n >> 1) + (n & 1);
-    int adjL = (l >> 1) + (l & 1);
-    int adjM = (m >> 1) + (m & 1);
- 
-    lld**** As = new lld***[2];
-    for (int x = 0; x < 2; x++) {
-        As[x] = new lld**[2];
-        for (int y = 0; y < 2; y++) {
-            As[x][y] = new lld*[adjN];
-            for (int i = 0; i < adjN; i++) {
-                As[x][y][i] = new lld[adjL];
-                for (int j = 0; j < adjL; j++) {
-                    int I = i + (x & 1) * adjN;
-                    int J = j + (y & 1) * adjL;
-                    As[x][y][i][j] = (I < n && J < l) ? a[I][J] : 0;
-                }
-            }
-        }
-    }
- 
-    lld**** Bs = new lld***[2];
-    for (int x = 0; x < 2; x++) {
-        Bs[x] = new lld**[2];
-        for (int y = 0; y < 2; y++) {
-            Bs[x][y] = new lld*[adjN];
-            for (int i = 0; i < adjL; i++) {
-                Bs[x][y][i] = new lld[adjM];
-                for (int j = 0; j < adjM; j++) {
-                    int I = i + (x & 1) * adjL;
-                    int J = j + (y & 1) * adjM;
-                    Bs[x][y][i][j] = (I < l && J < m) ? b[I][J] : 0;
-                }
-            }
-        }
-    }
- 
-    lld*** s = new lld**[10];
-    for (int i = 0; i < 10; i++) {
-        switch (i) {
-        case 0:
-            s[i] = new lld*[adjL];
-            for (int j = 0; j < adjL; j++) {
-                s[i][j] = new lld[adjM];
-                for (int k = 0; k < adjM; k++) {
-                    s[i][j][k] = Bs[0][1][j][k] - Bs[1][1][j][k];
-                }
-            }
-            break;
-        case 1:
-            s[i] = new lld*[adjN];
-            for (int j = 0; j < adjN; j++) {
-                s[i][j] = new lld[adjL];
-                for (int k = 0; k < adjL; k++) {
-                    s[i][j][k] = As[0][0][j][k] + As[0][1][j][k];
-                }
-            }
-            break;
-        case 2:
-            s[i] = new lld*[adjN];
-            for (int j = 0; j < adjN; j++) {
-                s[i][j] = new lld[adjL];
-                for (int k = 0; k < adjL; k++) {
-                    s[i][j][k] = As[1][0][j][k] + As[1][1][j][k];
-                }
-            }
-            break;
-        case 3:
-            s[i] = new lld*[adjL];
-            for (int j = 0; j < adjL; j++) {
-                s[i][j] = new lld[adjM];
-                for (int k = 0; k < adjM; k++) {
-                    s[i][j][k] = Bs[1][0][j][k] - Bs[0][0][j][k];
-                }
-            }
-            break;
-        case 4:
-            s[i] = new lld*[adjN];
-            for (int j = 0; j < adjN; j++) {
-                s[i][j] = new lld[adjL];
-                for (int k = 0; k < adjL; k++) {
-                    s[i][j][k] = As[0][0][j][k] + As[1][1][j][k];
-                }
-            }
-            break;
-        case 5:
-            s[i] = new lld*[adjL];
-            for (int j = 0; j < adjL; j++) {
-                s[i][j] = new lld[adjM];
-                for (int k = 0; k < adjM; k++) {
-                    s[i][j][k] = Bs[0][0][j][k] + Bs[1][1][j][k];
-                }
-            }
-            break;
-        case 6:
-            s[i] = new lld*[adjN];
-            for (int j = 0; j < adjN; j++) {
-                s[i][j] = new lld[adjL];
-                for (int k = 0; k < adjL; k++) {
-                    s[i][j][k] = As[0][1][j][k] - As[1][1][j][k];
-                }
-            }
-            break;
-        case 7:
-            s[i] = new lld*[adjL];
-            for (int j = 0; j < adjL; j++) {
-                s[i][j] = new lld[adjM];
-                for (int k = 0; k < adjM; k++) {
-                    s[i][j][k] = Bs[1][0][j][k] + Bs[1][1][j][k];
-                }
-            }
-            break;
-        case 8:
-            s[i] = new lld*[adjN];
-            for (int j = 0; j < adjN; j++) {
-                s[i][j] = new lld[adjL];
-                for (int k = 0; k < adjL; k++) {
-                    s[i][j][k] = As[0][0][j][k] - As[1][0][j][k];
-                }
-            }
-            break;
-        case 9:
-            s[i] = new lld*[adjL];
-            for (int j = 0; j < adjL; j++) {
-                s[i][j] = new lld[adjM];
-                for (int k = 0; k < adjM; k++) {
-                    s[i][j][k] = Bs[0][0][j][k] + Bs[0][1][j][k];
-                }
-            }
-            break;
-        }
-    }
- 
-    lld*** p = new lld**[7];
-    p[0] = Strassen1(As[0][0], s[0], adjN, adjL, adjM);
-    p[1] = Strassen1(s[1], Bs[1][1], adjN, adjL, adjM);
-    p[2] = Strassen1(s[2], Bs[0][0], adjN, adjL, adjM);
-    p[3] = Strassen1(As[1][1], s[3], adjN, adjL, adjM);
-    p[4] = Strassen1(s[4], s[5], adjN, adjL, adjM);
-    p[5] = Strassen1(s[6], s[7], adjN, adjL, adjM);
-    p[6] = Strassen1(s[8], s[9], adjN, adjL, adjM);
- 
-    for (int i = 0; i < adjN; i++) {
-        for (int j = 0; j < adjM; j++) {
-            c[i][j] = p[4][i][j] + p[3][i][j] - p[1][i][j] + p[5][i][j];
-            if (j + adjM < m)
-                c[i][j + adjM] = p[0][i][j] + p[1][i][j];
-            if (i + adjN < n)
-                c[i + adjN][j] = p[2][i][j] + p[3][i][j];
-            if (i + adjN < n && j + adjM < m)
-                c[i + adjN][j + adjM] = p[4][i][j] + p[0][i][j] - p[2][i][j] - p[6][i][j];
-        }
-    }
- 
-    for (int x = 0; x < 2; x++) {
-        for (int y = 0; y < 2; y++) {
-            for (int i = 0; i < adjN; i++) {
-                delete[] As[x][y][i];
-            }
-            delete[] As[x][y];
-        }
-        delete[] As[x];
-    }
-    delete[] As;
- 
-    for (int x = 0; x < 2; x++) {
-        for (int y = 0; y < 2; y++) {
-            for (int i = 0; i < adjL; i++) {
-                delete[] Bs[x][y][i];
-            }
-            delete[] Bs[x][y];
-        }
-        delete[] Bs[x];
-    }
-    delete[] Bs;
- 
-    for (int i = 0; i < 10; i++) {
-        switch (i) {
-        case 0:
-        case 3:
-        case 5:
-        case 7:
-        case 9:
-            for (int j = 0; j < adjL; j++) {
-                delete[] s[i][j];
-            }
-            break;
-        case 1:
-        case 2:
-        case 4:
-        case 6:
-        case 8:
-            for (int j = 0; j < adjN; j++) {
-                delete[] s[i][j];
-            }
-            break;
-        }
-        delete[] s[i];
-    }
-    delete[] s;
- 
-    for (int i = 0; i < 7; i++) {
-        for (int j = 0; j < (n >> 1); j++) {
-            delete[] p[i][j];
-        }
-        delete[] p[i];
-    }
-    delete[] p;
- 
-    return c;
-}
- 
+// Código proporcionado por: https://www.geeksforgeeks.org/strassens-matrix-multiplication-algorithm-implementation/
+// Posee una modificación en el tipo de dato de las matrices de entrada y salida, de lld** a vector<vector<int>>.
 
-/*
-int main()
-{
-    lld** matA;
-    matA = new lld*[2];
-    for (int i = 0; i < 2; i++)
-        matA[i] = new lld[3];
-    matA[0][0] = 10;
-    matA[0][1] = 21;
-    matA[0][2] = 32;
-    matA[1][0] = 43;
-    matA[1][1] = 54;
-    matA[1][2] = 65;
- 
-    lld** matB;
-    matB = new lld*[3];
-    for (int i = 0; i < 3; i++)
-        matB[i] = new lld[2];
-    matB[0][0] = 76;
-    matB[0][1] = 87;
-    matB[1][0] = 98;
-    matB[1][1] = 109;
-    matB[2][0] = 110;
-    matB[2][1] = 121;
- 
-    lld** matC = Strassen1(matA, matB, 2, 3, 2);
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2; j++) {
-            printf("%lld ", matC[i][j]);
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+// Helper function to add two matrices
+vector<vector<int>> add(const vector<vector<int>>& A, const vector<vector<int>>& B) {
+    int n = A.size();
+    vector<vector<int>> C(n, vector<int>(n));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            C[i][j] = A[i][j] + B[i][j];
         }
-        printf("\n");
     }
- 
+    return C;
+}
+
+// Helper function to subtract two matrices
+vector<vector<int>> subtract(const vector<vector<int>>& A, const vector<vector<int>>& B) {
+    int n = A.size();
+    vector<vector<int>> C(n, vector<int>(n));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            C[i][j] = A[i][j] - B[i][j];
+        }
+    }
+    return C;
+}
+
+// Standard matrix multiplication
+vector<vector<int>> multiply(const vector<vector<int>>& A, const vector<vector<int>>& B) {
+    int n = A.size();
+    vector<vector<int>> C(n, vector<int>(n, 0));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            for (int k = 0; k < n; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+    return C;
+}
+
+// Strassen's algorithm for matrix multiplication
+vector<vector<int>> strassen(const vector<vector<int>>& A, const vector<vector<int>>& B) {
+    int n = A.size();
+    
+    if (n == 1) {
+        // Base case: 1x1 matrix multiplication
+        return {{A[0][0] * B[0][0]}};
+    }
+    
+    // Divide matrices into 4 submatrices of size n/2 x n/2
+    int newSize = n / 2;
+    vector<vector<int>> A11(newSize, vector<int>(newSize)), A12(newSize, vector<int>(newSize)),
+                        A21(newSize, vector<int>(newSize)), A22(newSize, vector<int>(newSize));
+    vector<vector<int>> B11(newSize, vector<int>(newSize)), B12(newSize, vector<int>(newSize)),
+                        B21(newSize, vector<int>(newSize)), B22(newSize, vector<int>(newSize));
+    
+    // Filling the submatrices
+    for (int i = 0; i < newSize; i++) {
+        for (int j = 0; j < newSize; j++) {
+            A11[i][j] = A[i][j];
+            A12[i][j] = A[i][j + newSize];
+            A21[i][j] = A[i + newSize][j];
+            A22[i][j] = A[i + newSize][j + newSize];
+
+            B11[i][j] = B[i][j];
+            B12[i][j] = B[i][j + newSize];
+            B21[i][j] = B[i + newSize][j];
+            B22[i][j] = B[i + newSize][j + newSize];
+        }
+    }
+
+    // Compute the 7 products (recursively)
+    vector<vector<int>> P1 = strassen(add(A11, A22), add(B11, B22));       // P1 = (A11 + A22) * (B11 + B22)
+    vector<vector<int>> P2 = strassen(add(A21, A22), B11);                 // P2 = (A21 + A22) * B11
+    vector<vector<int>> P3 = strassen(A11, subtract(B12, B22));            // P3 = A11 * (B12 - B22)
+    vector<vector<int>> P4 = strassen(A22, subtract(B21, B11));            // P4 = A22 * (B21 - B11)
+    vector<vector<int>> P5 = strassen(add(A11, A12), B22);                 // P5 = (A11 + A12) * B22
+    vector<vector<int>> P6 = strassen(subtract(A21, A11), add(B11, B12));  // P6 = (A21 - A11) * (B11 + B12)
+    vector<vector<int>> P7 = strassen(subtract(A12, A22), add(B21, B22));  // P7 = (A12 - A22) * (B21 + B22)
+
+    // Combine the results into the resulting matrix C
+    vector<vector<int>> C(n, vector<int>(n));
+    for (int i = 0; i < newSize; i++) {
+        for (int j = 0; j < newSize; j++) {
+            C[i][j] = P1[i][j] + P4[i][j] - P5[i][j] + P7[i][j];
+            C[i][j + newSize] = P3[i][j] + P5[i][j];
+            C[i + newSize][j] = P2[i][j] + P4[i][j];
+            C[i + newSize][j + newSize] = P1[i][j] - P2[i][j] + P3[i][j] + P6[i][j];
+        }
+    }
+
+    return C;
+}
+/*
+int main() {
+    // Test case
+    vector<vector<int>> A = {{1, 2}, {5, 6}};
+    vector<vector<int>> B = {{7, 8}, {9, 10}};
+    
+    vector<vector<int>> C = strassen(A, B);
+    
+    // Print result
+    for (const auto& row : C) {
+        for (int val : row) {
+            cout << val << " ";
+        }
+        cout << endl;
+    }
+    
     return 0;
 }*/

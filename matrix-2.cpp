@@ -1,3 +1,5 @@
+// Código base proporcionado por: https://www.geeksforgeeks.org/c-program-multiply-two-matrices/
+// Con modificaciones
 #include <vector>
 #include <iostream>
 

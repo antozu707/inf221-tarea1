@@ -1,4 +1,4 @@
-// https://www.geeksforgeeks.org/c-program-multiply-two-matrices/
+// Código proporcionado por: https://www.geeksforgeeks.org/c-program-multiply-two-matrices/
 #include <vector>
 #include <iostream>
 

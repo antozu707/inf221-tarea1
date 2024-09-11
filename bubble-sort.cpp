@@ -1,4 +1,4 @@
-// https://www.geeksforgeeks.org/bubble-sort-in-cpp/
+// Codigo proporcionado por https://www.geeksforgeeks.org/bubble-sort-in-cpp/
 #include <bits/stdc++.h>
 using namespace std;
 

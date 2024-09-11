@@ -6,7 +6,7 @@
 #include "matrix-1.cpp"
 #include "matrix-2.cpp"
 #include "strassen.cpp"
-#include "strassen3.cpp"
+
 
 using namespace std;
 using namespace std::chrono;
@@ -54,39 +54,56 @@ void benchmark2(const string& algorithm, M funcion, const vector<vector<int>>& A
     funcion(A, B, C);
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(end - start).count();
-    cout << algorithm << " toma " << duration << " microsegundos en multiplicar matrices de tamaño " << A.size() << "x" << A.size() << endl;
+    cout << algorithm << " toma " << duration << " microsegundos" << endl;
 }
 
 template <typename T>
 void benchmarkStrassen(const string& algorithm, T funcion, vector<vector<int>>& A, vector<vector<int>>& B) {
     auto start = high_resolution_clock::now();
-    vector<vector<int>> C = funcion(A, B); // Ejecuta la función Strassen
+    vector<vector<int>> C = funcion(A, B);
     auto stop = high_resolution_clock::now();
 
     auto duration = duration_cast<microseconds>(stop - start);
     cout << algorithm << " toma " << duration.count() << " microsegundos" << endl;
 
-    // Opcional: imprime resultado para depurar
-    // printMatrix(C);
 }
 
 int main(){
 
-    vector<vector<int>> A = random(1024);
-    vector<vector<int>> B = random(1024);
-    vector<vector<int>> C(16, vector<int>(16));
+    vector<vector<int>> A1 = random(256);
+    vector<vector<int>> B1 = random(256);
+    vector<vector<int>> C1(256, vector<int>(256));
 
-    benchmark2("Multiplicación tradicional", mmt, A, B, C);
-    benchmark2("Multiplicación tradicional optimizada", mmo, A, B, C);
-    //benchmark2("Strassen", strassen(A,B), A, B, C);
-    //benchmark2("Strassen", [](vector<vector<int>>& data) { strassen(A, B); }, A, B, C);
+    printf("Benchmarking para Multiplicación de Matrices\n");
+    printf("Tamaño de la matriz: 256\n");
+    benchmark2("Multiplicación tradicional", mmt, A1, B1, C1);
+    benchmark2("Multiplicación tradicional optimizada", mmo, A1, B1, C1);
+    benchmarkStrassen("Strassen", [](const vector<vector<int>>& A, const vector<vector<int>>& B) {
+        return strassen(A, B); 
+    }, A1, B1);
 
-    // Aquí puedes aplicar tus algoritmos de multiplicación
-    // Por ejemplo:
-    // std::vector<std::vector<int>> result(size, std::vector<int>(size));
-    // matrixMultiplyTraditional(randomMatrixA, randomMatrixB, result);
-    // strassenMultiply(largeValueMatrix, symmetricMatrix, result);
-    // ...
+    vector<vector<int>> A2 = random(1024);
+    vector<vector<int>> B2 = random(1024);
+    vector<vector<int>> C2(1024, vector<int>(1024));
+
+    printf("Tamaño de la matriz: 1024\n");
+    benchmark2("Multiplicación tradicional", mmt, A2, B2, C2);
+    benchmark2("Multiplicación tradicional optimizada", mmo, A2, B2, C2);
+    benchmarkStrassen("Strassen", [](const vector<vector<int>>& A, const vector<vector<int>>& B) {
+        return strassen(A, B);  
+    }, A2, B2);
+
+
+    vector<vector<int>> A3 = random(2048);
+    vector<vector<int>> B3 = random(2048);
+    vector<vector<int>> C3(2048, vector<int>(2048));
+
+    printf("Tamaño de la matriz: 2048\n");
+    benchmark2("Multiplicación tradicional", mmt, A3, B3, C3);
+    benchmark2("Multiplicación tradicional optimizada", mmo, A3, B3, C3);
+    benchmarkStrassen("Strassen", [](const vector<vector<int>>& A, const vector<vector<int>>& B) {
+        return strassen(A, B); 
+    }, A3, B3);
 
     return 0;
 }

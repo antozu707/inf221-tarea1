@@ -1,4 +1,4 @@
-// https://www.geeksforgeeks.org/cpp-program-for-merge-sort/
+// Código proporcionado por: https://www.geeksforgeeks.org/cpp-program-for-merge-sort/
 #include <iostream>
 #include <vector>
 

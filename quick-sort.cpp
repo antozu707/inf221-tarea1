@@ -1,4 +1,4 @@
-// https://www.geeksforgeeks.org/cpp-program-for-quicksort/
+// Código propocionado por: https://www.geeksforgeeks.org/cpp-program-for-quicksort/
 #include <bits/stdc++.h>
 using namespace std;
 
