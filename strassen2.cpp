@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define ROW_1 4
-#define COL_1 4
+#define ROW_1 2
+#define COL_1 3
 
-#define ROW_2 4
-#define COL_2 4
+#define ROW_2 3
+#define COL_2 2
 
 void print(string display, vector<vector<int> > matrix,
 		int start_row, int start_column, int end_row,
@@ -154,19 +154,17 @@ multiply_matrix(vector<vector<int> > matrix_A,
 	return result_matrix;
 }
 
+
 int main()
 {
-	vector<vector<int> > matrix_A = { { 1, 1, 1, 1 },
-									{ 2, 2, 2, 2 },
-									{ 3, 3, 3, 3 },
-									{ 2, 2, 2, 2 } };
+	vector<vector<int> > matrix_A = { { 1, 2, 3 },
+									  { 4, 5, 6 } };
 
 	print("Array A", matrix_A, 0, 0, ROW_1 - 1, COL_1 - 1);
 
-	vector<vector<int> > matrix_B = { { 1, 1, 1, 1 },
-									{ 2, 2, 2, 2 },
-									{ 3, 3, 3, 3 },
-									{ 2, 2, 2, 2 } };
+	vector<vector<int> > matrix_B = { { 7, 8 },
+									{ 9, 10 },
+									{ 11, 12 } };
 
 	print("Array B", matrix_B, 0, 0, ROW_2 - 1, COL_2 - 1);
 

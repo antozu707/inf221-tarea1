@@ -2,7 +2,7 @@
 using namespace std;
 typedef long long lld;
  
-/* Strassen's Algorithm for matrix multiplication
+/* Strassen1's Algorithm for matrix multiplication
 Complexity: O(n^2.808) */
  
 inline lld** MatrixMultiply(lld** a, lld** b, int n,
@@ -23,7 +23,7 @@ inline lld** MatrixMultiply(lld** a, lld** b, int n,
     return c;
 }
  
-inline lld** Strassen(lld** a, lld** b, int n,
+inline lld** Strassen1(lld** a, lld** b, int n,
                                 int l, int m)
 {
     if (n == 1 || l == 1 || m == 1)
@@ -166,13 +166,13 @@ inline lld** Strassen(lld** a, lld** b, int n,
     }
  
     lld*** p = new lld**[7];
-    p[0] = Strassen(As[0][0], s[0], adjN, adjL, adjM);
-    p[1] = Strassen(s[1], Bs[1][1], adjN, adjL, adjM);
-    p[2] = Strassen(s[2], Bs[0][0], adjN, adjL, adjM);
-    p[3] = Strassen(As[1][1], s[3], adjN, adjL, adjM);
-    p[4] = Strassen(s[4], s[5], adjN, adjL, adjM);
-    p[5] = Strassen(s[6], s[7], adjN, adjL, adjM);
-    p[6] = Strassen(s[8], s[9], adjN, adjL, adjM);
+    p[0] = Strassen1(As[0][0], s[0], adjN, adjL, adjM);
+    p[1] = Strassen1(s[1], Bs[1][1], adjN, adjL, adjM);
+    p[2] = Strassen1(s[2], Bs[0][0], adjN, adjL, adjM);
+    p[3] = Strassen1(As[1][1], s[3], adjN, adjL, adjM);
+    p[4] = Strassen1(s[4], s[5], adjN, adjL, adjM);
+    p[5] = Strassen1(s[6], s[7], adjN, adjL, adjM);
+    p[6] = Strassen1(s[8], s[9], adjN, adjL, adjM);
  
     for (int i = 0; i < adjN; i++) {
         for (int j = 0; j < adjM; j++) {
@@ -244,31 +244,33 @@ inline lld** Strassen(lld** a, lld** b, int n,
     return c;
 }
  
+
+/*
 int main()
 {
     lld** matA;
     matA = new lld*[2];
     for (int i = 0; i < 2; i++)
         matA[i] = new lld[3];
-    matA[0][0] = 1;
-    matA[0][1] = 2;
-    matA[0][2] = 3;
-    matA[1][0] = 4;
-    matA[1][1] = 5;
-    matA[1][2] = 6;
+    matA[0][0] = 10;
+    matA[0][1] = 21;
+    matA[0][2] = 32;
+    matA[1][0] = 43;
+    matA[1][1] = 54;
+    matA[1][2] = 65;
  
     lld** matB;
     matB = new lld*[3];
     for (int i = 0; i < 3; i++)
         matB[i] = new lld[2];
-    matB[0][0] = 7;
-    matB[0][1] = 8;
-    matB[1][0] = 9;
-    matB[1][1] = 10;
-    matB[2][0] = 11;
-    matB[2][1] = 12;
+    matB[0][0] = 76;
+    matB[0][1] = 87;
+    matB[1][0] = 98;
+    matB[1][1] = 109;
+    matB[2][0] = 110;
+    matB[2][1] = 121;
  
-    lld** matC = Strassen(matA, matB, 2, 3, 2);
+    lld** matC = Strassen1(matA, matB, 2, 3, 2);
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
             printf("%lld ", matC[i][j]);
@@ -277,4 +279,4 @@ int main()
     }
  
     return 0;
-}
+}*/

@@ -53,7 +53,7 @@ vector<int> desc(int size) {
 }
 
 template <typename T>
-void benchmark1(const string& algorithm, T& funcion, vector<int>& dataset) {
+void benchmark1(const string& algorithm, T funcion, vector<int>& dataset) {
     auto start = high_resolution_clock::now();
     funcion(dataset); // Provide the missing argument
     auto stop = high_resolution_clock::now();
@@ -77,11 +77,17 @@ int main() {
     vector<int> desc1000 = desc(1000);
     vector<int> desc10000 = desc(10000);
 
+    printf("Benchmarking para Algoritmos de Ordenamiento\n");
+    printf("Tamaño de los datasets: 10000\n");
     benchmark1("Bubble Sort Random", bubbleSort, random10000);
     benchmark1("Bubble Sort Asc", bubbleSort, asc10000);
     benchmark1("Bubble Sort Desc", bubbleSort, desc10000);
-    //benchmark1("Merge Sort", mergeSort, random1000);
-    //benchmark1("Quick Sort", quickSort, random1000);
+    benchmark1("Merge Sort Random", [](vector<int>& data) { mergeSort(data, 0, data.size() - 1); }, random10000);
+    benchmark1("Merge Sort Asc", [](vector<int>& data) { mergeSort(data, 0, data.size() - 1); }, asc10000);
+    benchmark1("Merge Sort Desc", [](vector<int>& data) { mergeSort(data, 0, data.size() - 1); }, desc10000);
+    benchmark1("Quick Sort Random", [](vector<int>& data) { quickSort(data, 0, data.size() - 1); }, random10000);
+    benchmark1("Quick Sort Asc", [](vector<int>& data) { quickSort(data, 0, data.size() - 1); }, asc10000);
+    benchmark1("Quick Sort Desc", [](vector<int>& data) { quickSort(data, 0, data.size() - 1); }, desc10000);
     benchmark1("Sort Function Random", standardSort, random10000);
     benchmark1("Sort Function Asc", standardSort, asc10000);
     benchmark1("Sort Function Desc", standardSort, desc10000);

@@ -24,6 +24,7 @@ void mmo(const vector<vector<int>>& A, const vector<vector<int>>& B, vector<vect
 }
 
 // TEST
+/*
 int main(){
     vector<vector<int>> A = {{1, 2}, {3, 4}};
     vector<vector<int>> B = {{5, 6}, {7, 8}};
@@ -36,4 +37,4 @@ int main(){
         cout << endl;
     }
     return 0;
-}
+}*/
